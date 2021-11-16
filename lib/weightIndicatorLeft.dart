@@ -76,7 +76,7 @@ class WeightIndicatorLeftState extends State<WeightIndicatorLeft> {
               flex: 3,
               child: Transform.translate(
                 offset: Offset(-5.0,
-                    _height != null ? _height / 2 - (progress * _height) : 0),
+                    _height != null ? (_height / 2) - (_height * progress) : 0),
                 child: Container(
                   height: double.infinity,
                   key: _key,

@@ -45,8 +45,11 @@ class WeightIndicatorRightState extends State<WeightIndicatorRight> {
                 key: _key,
                 height: double.infinity,
                 child: Transform.translate(
-                  offset: Offset(5.0,
-                      _height != null ? _height / 2 - (progress * _height) : 0),
+                  offset: Offset(
+                      5.0,
+                      _height != null
+                          ? (_height / 2) - (_height * progress)
+                          : 0),
                   child: Row(children: [
                     Text(
                       percentage.toString() + "%",
