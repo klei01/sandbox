@@ -11,7 +11,18 @@ class WeightIndicatorRight extends StatefulWidget {
 }
 
 class WeightIndicatorRightState extends State<WeightIndicatorRight> {
-  GlobalKey _widgetKey;
+  GlobalKey _key = GlobalKey();
+  double _height;
+  void getHeight() {
+    _height = _key.currentContext.size.height;
+    print(_height);
+  }
+
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => getHeight());
+  }
+
   @override
   Widget build(BuildContext context) {
     double progress = this.widget.progress;
@@ -31,19 +42,24 @@ class WeightIndicatorRightState extends State<WeightIndicatorRight> {
             Expanded(
               flex: 3,
               child: Container(
-                key: _widgetKey,
+                key: _key,
                 height: double.infinity,
-                child: Row(children: [
-                  Text(
-                    percentage.toString() + "%",
-                    style: TextStyle(color: progressColor),
-                  ),
-                  Icon(
-                    Icons.play_arrow,
-                    size: 30,
-                    color: progressColor,
-                  )
-                ]),
+                child: Transform.translate(
+                  offset: Offset(5.0,
+                      _height != null ? _height / 2 - (progress * _height) : 0),
+                  child: Row(children: [
+                    Text(
+                      percentage.toString() + "%",
+                      style: TextStyle(
+                          color: progressColor, fontWeight: FontWeight.bold),
+                    ),
+                    Icon(
+                      Icons.play_arrow,
+                      size: 30,
+                      color: progressColor,
+                    )
+                  ]),
+                ),
               ),
             ),
             Expanded(
