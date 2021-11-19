@@ -33,7 +33,9 @@ class WeightIndicatorRightState extends State<WeightIndicatorRight> {
             ? Colors.orange
             : Colors.green;
     return Container(
-      padding: EdgeInsets.only(top: 50),
+      padding: EdgeInsets.only(
+        top: 50,
+      ),
       width: 90,
       child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
         Expanded(

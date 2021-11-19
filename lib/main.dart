@@ -1,13 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 import 'package:sandbox/body.dart';
 import 'package:sandbox/header.dart';
-import 'package:sandbox/timePeriodButton.dart';
-import 'package:sandbox/weightIndicatorLeft.dart';
-import 'package:sandbox/weightIndicatorRight.dart';
+import 'package:sandbox/login.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,7 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        appBarTheme:
+            AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light),
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );

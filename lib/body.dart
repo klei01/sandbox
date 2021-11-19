@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sandbox/timePeriodButton.dart';
+import 'package:sandbox/lineChartWidget.dart';
+import 'package:sandbox/timePeriodPicker.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -9,6 +10,27 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   String timePeriod = "Last Hour";
+  DateTime selectedDate = DateTime.now();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        builder: (context, child) {
+          return Theme(
+              data: Theme.of(context).copyWith(
+                  colorScheme: ColorScheme.light(
+                primary: Color.fromARGB(255, 40, 36, 69),
+              )),
+              child: child);
+        },
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        print(selectedDate);
+      });
+  }
 
   void changeTitle(String text) {
     setState(() {
@@ -35,51 +57,21 @@ class _BodyState extends State<Body> {
             ]),
         child: Column(
           children: [
-            Text(
-              timePeriod,
-              style: GoogleFonts.poppins(
-                  fontSize: 40,
-                  color: Color.fromARGB(255, 40, 36, 69),
-                  fontWeight: FontWeight.bold),
+            Expanded(
+              flex: 1,
+              child: Text(
+                timePeriod,
+                style: GoogleFonts.poppins(
+                    fontSize: 40,
+                    color: Color.fromARGB(255, 40, 36, 69),
+                    fontWeight: FontWeight.bold),
+              ),
             ),
-            Container(
-              height: 50,
-              child: Row(children: [
-                Expanded(
-                  flex: 1,
-                  child: IconButton(
-                      iconSize: 30,
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.calendar_today,
-                        color: Color.fromARGB(255, 40, 36, 69),
-                      )),
-                ),
-                VerticalDivider(
-                  color: Color.fromARGB(255, 40, 36, 69),
-                  width: 5,
-                  thickness: 3,
-                ),
-                Expanded(
-                  flex: 8,
-                  child: ListView(
-                    shrinkWrap: true,
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      TimePeriodButton(
-                          "Last Hour", () => changeTitle("Last Hour")),
-                      TimePeriodButton(
-                          "Last Day", () => changeTitle("Last Day")),
-                      TimePeriodButton(
-                          "Last Week", () => changeTitle("Last Week")),
-                      TimePeriodButton(
-                          "Last Month", () => changeTitle("Last Month")),
-                    ],
-                  ),
-                ),
-              ]),
-            )
+            Expanded(
+                flex: 1,
+                child:
+                    TimePeriodPicker(changeTitle, () => _selectDate(context))),
+            Expanded(flex: 8, child: LineChartWidget())
           ],
         ),
       ),
