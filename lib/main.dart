@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:sandbox/body.dart';
 import 'package:sandbox/header.dart';
 import 'package:sandbox/login.dart';
+import 'package:sandbox/signup.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,20 +13,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        appBarTheme:
-            AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light),
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+        routes: {
+          "home": (context) => MyHomePage(),
+          "login": (context) => login(),
+          "signup": (context) => signup()
+        },
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          appBarTheme:
+              AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light),
+        ),
+        home: login()
+        //MyHomePage(title: 'Flutter Demo Home Page'),
+        );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  MyHomePage({Key key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();

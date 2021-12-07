@@ -1,78 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:sandbox/dialogAction.dart';
+import 'package:sandbox/editDialog.dart';
 import 'package:sandbox/settingTitle.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingOption extends StatelessWidget {
+class SettingOption extends StatefulWidget {
   final Icon icon;
   final String title;
+
   SettingOption(this.icon, this.title);
+
+  @override
+  State<SettingOption> createState() => _SettingOptionState();
+}
+
+class _SettingOptionState extends State<SettingOption> {
+  final prefs = SharedPreferences.getInstance();
+
+  int value = 0;
+  Future<void> getValue() async {
+    value = await prefs.then((prefs) {
+      return prefs.getInt(widget.title) ?? 0;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getValue();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-          onTap: () {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return Dialog(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    backgroundColor: Color.fromARGB(255, 40, 36, 69),
-                    child: Container(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: SettingTitle(icon, title),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              "Aktuell : 85kg",
-                              style: GoogleFonts.roboto(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 30),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  filled: true,
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 20),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30))),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    top: BorderSide(
-                                        color: Colors.white, width: 5))),
-                            child: Row(
-                              children: [
-                                DialogAction("Cancel"),
-                                DialogAction("OK")
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                });
-          },
+          onTap: widget.title == "Ausloggen"
+              ? () => Navigator.pushNamed(context, "login")
+              : () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return EditDialog(widget.icon, widget.title);
+                      });
+                },
           child: Container(
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 10),
-              child: SettingTitle(icon, title))),
+              child: SettingTitle(widget.icon, widget.title))),
     );
   }
 }

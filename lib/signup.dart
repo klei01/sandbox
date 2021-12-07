@@ -28,15 +28,29 @@ class _signupState extends State<signup> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-            child: Text(
-              'Already Registered? Log in.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Color.fromRGBO(40, 36, 69, 100),
-                fontWeight: FontWeight.bold,
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
+              Text(
+                'Already Registered?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: Color.fromRGBO(40, 36, 69, 100),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(context, "login"),
+                child: Text(
+                  'Log in.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Color.fromRGBO(40, 36, 69, 1),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ]),
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(0.0, 30.0, 330.0, 0.0),
@@ -155,7 +169,7 @@ class _signupState extends State<signup> {
             ),
           ),
           ElevatedButton(
-              onPressed: () {},
+              onPressed: () => Navigator.pushNamed(context, "login"),
               child: Text('Sign up'),
               style: ElevatedButton.styleFrom(
                   primary: Color.fromRGBO(40, 36, 69, 10),

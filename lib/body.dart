@@ -47,7 +47,7 @@ class _BodyState extends State<Body> {
         padding: EdgeInsets.all(10),
         margin: EdgeInsets.fromLTRB(10, 20, 10, 50),
         decoration: BoxDecoration(
-            color: Colors.white70,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
               BoxShadow(
