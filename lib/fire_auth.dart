@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class FireAuth {
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
-
   static void signUpWithEmail(
       String email, String password, String name, DateTime dob) async {
     try {
@@ -17,6 +16,7 @@ class FireAuth {
             .collection("User")
             .doc(user.user.uid)
             .set({"name": name, "email": email, "dob": dob});
+        user.user.sendEmailVerification();
         return user;
       });
     } on FirebaseAuthException catch (e) {
@@ -29,4 +29,6 @@ class FireAuth {
       print(e);
     }
   }
+
+  static void signinWithEmailAndPassword() {}
 }

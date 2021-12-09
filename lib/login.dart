@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandbox/text_flied.dart';
 
 class login extends StatefulWidget {
   const login({Key key}) : super(key: key);
@@ -10,6 +11,8 @@ class login extends StatefulWidget {
 }
 
 class _loginState extends State<login> {
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController passwordController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,63 +46,11 @@ class _loginState extends State<login> {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0.0, 0.0, 330.0, 0.0),
-            child: Container(
-              height: 15.0,
-              child: Text(
-                'NAME',
-                style: TextStyle(
-                  letterSpacing: 1.5,
-                  color: Color.fromRGBO(40, 36, 69, 100),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.0,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
-            child: TextField(
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                fillColor: Color.fromRGBO(40, 36, 69, 70),
-                filled: true,
-                border: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color.fromRGBO(40, 36, 69, 100)),
-                    borderRadius: (BorderRadius.circular(10.0))),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0.0, 20.0, 280.0, 0.0),
-            child: Container(
-              height: 15.0,
-              child: Text(
-                'PASSWORD',
-                style: TextStyle(
-                  letterSpacing: 1.5,
-                  color: Color.fromRGBO(40, 36, 69, 100),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.0,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 50.0),
-            child: TextField(
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                fillColor: Color.fromRGBO(40, 36, 69, 70),
-                filled: true,
-                border: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color.fromRGBO(40, 36, 69, 100)),
-                    borderRadius: (BorderRadius.circular(10.0))),
-              ),
-            ),
+          CustomTextField("E-MAIL", emailController, false),
+          CustomTextField("PASSWORD", passwordController, true),
+          Divider(
+            height: 30.0,
+            color: Colors.transparent,
           ),
           ElevatedButton(
               onPressed: () => Navigator.pushNamed(context, "home"),
