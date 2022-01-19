@@ -16,7 +16,26 @@ class _CustomTextFieldState extends State<CustomTextField> {
     super.initState();
     hide = widget.obscureText;
   }
-
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        builder: (context, child) {
+          return Theme(
+              data: Theme.of(context).copyWith(
+                  colorScheme: ColorScheme.light(
+                primary: Color.fromARGB(255, 40, 36, 69),
+              )),
+              child: child);
+        },
+        firstDate: DateTime(1900),
+        lastDate: DateTime.now());
+    if (picked != null ){
+      setState(() {
+        widget.controller.text = "${picked.day}/${picked.month}/${picked.year}";
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,6 +61,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             controller: widget.controller,
             obscureText: hide,
             autocorrect: false,
+            onTap: widget.label == "BIRTHDAY" ? () => _selectDate(context): null,
             enableSuggestions: false,
             decoration: InputDecoration(
               suffixIcon: widget.obscureText

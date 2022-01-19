@@ -1,11 +1,14 @@
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sandbox/DiscoverPage.dart';
 import 'package:sandbox/body.dart';
 import 'package:sandbox/firebase_options.dart';
 import 'package:sandbox/header.dart';
 import 'package:sandbox/login.dart';
 import 'package:sandbox/signup.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +25,8 @@ class MyApp extends StatelessWidget {
         routes: {
           "home": (context) => MyHomePage(),
           "login": (context) => login(),
-          "signup": (context) => signup()
+          "signup": (context) => signup(),
+          "connection" :(context) => DiscoveryPage(),
         },
         title: 'Flutter Demo',
         theme: ThemeData(

@@ -54,7 +54,7 @@ class _EditDialogState extends State<EditDialog> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                "Aktuell : ${_value}kg",
+               widget.title == "Gewicht" ?"Aktuell : ${_value}kg" : "Aktuell : ${_value}%",
                 style: GoogleFonts.roboto(
                     color: Colors.white,
                     fontSize: 20,

@@ -17,6 +17,22 @@ class _signupState extends State<signup> {
   TextEditingController passwordController = new TextEditingController();
   TextEditingController nameController = new TextEditingController();
   TextEditingController dobController = new TextEditingController();
+  String email;
+  String password;
+  String name;
+  int dob;
+  DateTime selectedDate = DateTime.now();
+    Future<void> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1900),
+        lastDate: selectedDate);
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,11 +87,15 @@ class _signupState extends State<signup> {
             color: Colors.transparent,
           ),
           ElevatedButton(
-              onPressed: () => FireAuth.signUpWithEmail(
+              onPressed: (){
+                var dateValues = dobController.text.split("/");
+                print(dateValues); 
+                FireAuth.signUpWithEmail(
                   emailController.text,
                   passwordController.text,
                   nameController.text,
-                  DateTime(2000, 15, 6, 0, 0, 0)),
+                  DateTime(int.parse(dateValues[2]),int.parse(dateValues[1]),int.parse(dateValues[0])));
+                  },
               child: Text('Sign up'),
               style: ElevatedButton.styleFrom(
                   primary: Color.fromRGBO(40, 36, 69, 10),

@@ -21,7 +21,9 @@ class Settings extends StatelessWidget {
             isScrollControlled: true,
             backgroundColor: Color.fromRGBO(40, 36, 69, 1),
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.vertical(
+                  top : Radius.circular(20)
+                )),
             context: context,
             builder: (context) {
               return Wrap(children: [

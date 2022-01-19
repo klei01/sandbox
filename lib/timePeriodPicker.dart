@@ -19,7 +19,7 @@ class TimePeriodPicker extends StatelessWidget {
               child: Builder(builder: (context) {
                 return IconButton(
                     iconSize: 30,
-                    onPressed: pickDate,
+                    onPressed:() => pickDate,
                     icon: Icon(
                       Icons.calendar_today,
                       color: Color.fromARGB(255, 40, 36, 69),

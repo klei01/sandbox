@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sandbox/editDialog.dart';
 import 'package:sandbox/settingTitle.dart';
@@ -35,8 +37,9 @@ class _SettingOptionState extends State<SettingOption> {
       color: Colors.transparent,
       child: InkWell(
           onTap: widget.title == "Ausloggen"
-              ? () => Navigator.pushNamed(context, "login")
-              : () {
+              ? () {
+               FirebaseAuth.instanceFor(app : Firebase.apps.first).signOut();
+              }: () {
                   showDialog(
                       context: context,
                       builder: (context) {

@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandbox/text_flied.dart';
+
+import 'fire_auth.dart';
 
 class login extends StatefulWidget {
   const login({Key key}) : super(key: key);
@@ -13,6 +17,21 @@ class login extends StatefulWidget {
 class _loginState extends State<login> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+  FirebaseAuth auth = FirebaseAuth.instanceFor(app: Firebase.apps.first);
+  @override
+  void initState() {
+    auth
+  .authStateChanges()
+  .listen((User user) {
+    if (user == null) {
+      print('User is currently signed out!');
+    } else {
+      print("sth");
+      Navigator.pushNamed(context, "home");
+    }
+  });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +73,7 @@ class _loginState extends State<login> {
               color: Colors.transparent,
             ),
             ElevatedButton(
-                onPressed: () => Navigator.pushNamed(context, "home"),
+                onPressed: () => FireAuth.signinWithEmailAndPassword(emailController.text, passwordController.text,auth),
                 child: Text('Log in'),
                 style: ElevatedButton.styleFrom(
                     primary: Color.fromRGBO(40, 36, 69, 100),
