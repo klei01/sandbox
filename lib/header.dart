@@ -7,9 +7,31 @@ import 'package:sandbox/settings.dart';
 import 'package:sandbox/weightIndicatorLeft.dart';
 import 'package:sandbox/weightIndicatorRight.dart';
 
-class Header extends StatelessWidget {
-  final AnimationController controller;
-  Header(this.controller);
+class Header extends StatefulWidget {
+  @override
+  State<Header> createState() => _HeaderState();
+}
+
+class _HeaderState extends State<Header> with TickerProviderStateMixin{
+  AnimationController controller;
+
+  @override
+  void initState() {
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..addListener(() {
+        setState(() {});
+      });
+    controller.repeat(reverse: true);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Expanded(

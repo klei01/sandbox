@@ -16,68 +16,70 @@ class _loginState extends State<login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Container(
-              padding: EdgeInsets.fromLTRB(50.0, 100.0, 50.0, 0.0),
-              child: Container()),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              child: Text(
-                'Login',
-                style: TextStyle(
-                  fontSize: 50.0,
-                  color: Color.fromRGBO(40, 36, 69, 100),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 30.0),
-            child: Container(
-              child: Text(
-                'Sign in to continue',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    color: Color.fromRGBO(143, 142, 142, 100),
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          CustomTextField("E-MAIL", emailController, false),
-          CustomTextField("PASSWORD", passwordController, true),
-          Divider(
-            height: 30.0,
-            color: Colors.transparent,
-          ),
-          ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, "home"),
-              child: Text('Log in'),
-              style: ElevatedButton.styleFrom(
-                  primary: Color.fromRGBO(40, 36, 69, 100),
-                  padding: EdgeInsets.fromLTRB(140.0, 20.0, 140.0, 20.0),
-                  textStyle:
-                      TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
-          Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Row(mainAxisSize: MainAxisSize.min, children: [
-                Text(
-                  "You dont have an account yet?",
-                  style:
-                      GoogleFonts.roboto(color: Colors.grey[600], fontSize: 18),
-                ),
-                GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, "signup"),
-                  child: Text(
-                    "Sign Up.",
-                    style: GoogleFonts.roboto(
-                        color: Color.fromARGB(255, 40, 36, 69), fontSize: 18),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+                padding: EdgeInsets.fromLTRB(50.0, 100.0, 50.0, 0.0),
+                child: Container()),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                child: Text(
+                  'Login',
+                  style: TextStyle(
+                    fontSize: 50.0,
+                    color: Color.fromRGBO(40, 36, 69, 100),
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ])),
-        ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 30.0),
+              child: Container(
+                child: Text(
+                  'Sign in to continue',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      color: Color.fromRGBO(143, 142, 142, 100),
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            CustomTextField("E-MAIL", emailController, false),
+            CustomTextField("PASSWORD", passwordController, true),
+            Divider(
+              height: 30.0,
+              color: Colors.transparent,
+            ),
+            ElevatedButton(
+                onPressed: () => Navigator.pushNamed(context, "home"),
+                child: Text('Log in'),
+                style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(40, 36, 69, 100),
+                    padding: EdgeInsets.fromLTRB(140.0, 20.0, 140.0, 20.0),
+                    textStyle:
+                        TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
+            Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  Text(
+                    "You dont have an account yet?",
+                    style:
+                        GoogleFonts.roboto(color: Colors.grey[600], fontSize: 18),
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, "signup"),
+                    child: Text(
+                      "Sign Up.",
+                      style: GoogleFonts.roboto(
+                          color: Color.fromARGB(255, 40, 36, 69), fontSize: 18),
+                    ),
+                  ),
+                ])),
+          ],
+        ),
       ),
     );
   }

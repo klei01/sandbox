@@ -45,7 +45,7 @@ class _BodyState extends State<Body> {
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.all(10),
-        margin: EdgeInsets.fromLTRB(10, 20, 10, 50),
+        margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(30),
