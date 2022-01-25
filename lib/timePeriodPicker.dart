@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sandbox/body.dart';
 import 'package:sandbox/timePeriodButton.dart';
 
 class TimePeriodPicker extends StatelessWidget {
@@ -18,8 +19,8 @@ class TimePeriodPicker extends StatelessWidget {
               ),
               child: Builder(builder: (context) {
                 return IconButton(
-                    iconSize: 30,
-                    onPressed:() => pickDate,
+                    iconSize: 30, 
+                    onPressed:() => pickDate(),
                     icon: Icon(
                       Icons.calendar_today,
                       color: Color.fromARGB(255, 40, 36, 69),
@@ -38,10 +39,8 @@ class TimePeriodPicker extends StatelessWidget {
             physics: BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
             children: [
-              TimePeriodButton("Last Hour", () => changeTitle("Last Hour")),
-              TimePeriodButton("Last Day", () => changeTitle("Last Day")),
-              TimePeriodButton("Last Week", () => changeTitle("Last Week")),
-              TimePeriodButton("Last Month", () => changeTitle("Last Month")),
+              TimePeriodButton("Last Hour", () => changeTitle("Last Hour",Period.hour)),
+              TimePeriodButton("Last Day", () => changeTitle("Last Day",Period.day)),
             ],
           ),
         ),

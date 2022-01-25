@@ -25,7 +25,7 @@ class WeightIndicatorRightState extends State<WeightIndicatorRight> {
 
   @override
   Widget build(BuildContext context) {
-    double progress = this.widget.progress;
+    double progress = this.widget.progress > 1 ? 1 : this.widget.progress;
     int percentage = (progress * 100).round();
     Color progressColor = progress >= 0.25
         ? Colors.green

@@ -2,8 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sandbox/notificationButton.dart';
 import 'package:sandbox/settingOption.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatelessWidget {
+  // bool vibrate;
+  // bool sound;
+  // bool led;
+  // initPrefs() async{
+  //   final prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     vibrate = prefs.getBool("vibrate") ?? false;
+  //     sound = prefs.getBool("sound") ?? false;
+  //     led = prefs.getBool("led") ?? false;
+  //   });
+  // }
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -49,20 +61,21 @@ class Settings extends StatelessWidget {
                                 ),
                                 unactiveIcon: Icon(
                                   Icons.volume_off_outlined,
-                                )),
+                                ), title: "sound"),
                             NotificationButton(
                                 activeIcon: Icon(
                                   Icons.flashlight_on_outlined,
                                 ),
                                 unactiveIcon: Icon(
                                   Icons.flashlight_off_outlined,
-                                )),
+                                ), title: "led",),
                             NotificationButton(
                               activeIcon: Icon(
                                 Icons.vibration_outlined,
                               ),
                               unactiveIcon:
                                   SvgPicture.asset("assets/vibrationoff.svg"),
+                                  title: "vibrate",
                             ),
                           ],
                         ),

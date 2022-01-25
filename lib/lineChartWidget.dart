@@ -1,19 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:sandbox/body.dart';
+import 'package:sandbox/fire_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LineChartWidget extends StatefulWidget {
+  final Period range;
+  final DateTime initialDate;
+  LineChartWidget(this.range,[this.initialDate]);
   @override
   State<LineChartWidget> createState() => _LineChartWidgetState();
 }
 
 class _LineChartWidgetState extends State<LineChartWidget> {
   final prefs = SharedPreferences.getInstance();
-  double min;
   double max;
   String getTimeString(double time) { 
     Timestamp timestamp = Timestamp.fromMillisecondsSinceEpoch(time.toInt());
@@ -36,9 +41,23 @@ class _LineChartWidgetState extends State<LineChartWidget> {
   }
   @override
   Widget build(BuildContext context) {
+    double min;
+    double max;
+    Stream data;
+    if(widget.initialDate !=null){
+      DateTime date = widget.initialDate;
+      min = Timestamp.fromDate(date).millisecondsSinceEpoch.toDouble();
+      max = Timestamp.fromDate(DateTime(date.year,date.month,date.day,24,00)).millisecondsSinceEpoch.toDouble();
+      data = FirebaseFirestore.instance.collection("data").where("uid",isEqualTo: FirebaseAuth.instance.currentUser.uid).where("time",isGreaterThanOrEqualTo: DateTime.fromMillisecondsSinceEpoch(min.toInt())).where("time",isLessThanOrEqualTo: DateTime.fromMillisecondsSinceEpoch(max.toInt())).snapshots();
+    }
+    else{
+      data = FirebaseFirestore.instance.collection("data").where("uid",isEqualTo: FirebaseAuth.instance.currentUser.uid).where("time",isGreaterThanOrEqualTo: DateTime.now().subtract(widget.range == Period.hour ? Duration(hours: 1) : Duration(days: 1))).snapshots();
+      min = Timestamp.fromDate(DateTime.now().subtract(widget.range == Period.hour ? Duration(hours: 1) : Duration(days: 1))).millisecondsSinceEpoch.toDouble();
+      max = Timestamp.now().millisecondsSinceEpoch.toDouble();
+    }
 
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection("data").where("time",isGreaterThanOrEqualTo: DateTime.now().subtract(const Duration(hours: 1))).orderBy("time").snapshots(),
+      stream: data,
       builder: (context, snapshot) {
         List<FlSpot> spots = [];
         if(snapshot.hasError){
@@ -59,27 +78,32 @@ class _LineChartWidgetState extends State<LineChartWidget> {
               Map<String, dynamic> data = doc.data() as Map<String,dynamic>;
               Timestamp timestamp =data["time"] as Timestamp;
               double value = data["value"] *100 as double;
+              value = value.isNaN ? 0 : value;
               FlSpot spot = FlSpot(timestamp.millisecondsSinceEpoch.toDouble(), value);
               return spot;
           }).toList();
-              print("First: "+spots.first.x.toString());
-              print("Last: "+spots.last.x.toString());
+          if(spots.isEmpty){
+            return Container(
+              child: Center(child: Text("No data for this time period.",style: TextStyle(fontSize: 20,color: Color.fromARGB(255, 40, 36, 69)),),),
+            );
+          }
           return Container(
             padding: EdgeInsets.fromLTRB(0, 10, 15, 10),
             child: LineChart(LineChartData(
-              minX: Timestamp.fromDate(DateTime.now().subtract(Duration(hours: 1))).millisecondsSinceEpoch.toDouble(),
-              maxX: spots.last.x.toDouble() ,
+              minX: min,
+              maxX: max ,
               minY: 0,
-              maxY: belastung != 0 ? belastung.toDouble() : 20,
+              maxY: 100,
+
               gridData:
-                  FlGridData(drawVerticalLine: true, drawHorizontalLine: false),
+                  FlGridData(drawVerticalLine: false, drawHorizontalLine: false,),
               borderData: FlBorderData(show: false),
               titlesData: FlTitlesData(
                 rightTitles: SideTitles(showTitles: false),
                 topTitles: SideTitles(showTitles: false),
                 bottomTitles: SideTitles(
                     showTitles: true,
-                    interval: 1800000,
+                    interval: widget.range == Period.hour ? 1800000 : 28800000,
                     reservedSize: 10,
                     getTitles: (value) {
                       return getTimeString(value);
@@ -89,10 +113,10 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                     }),
                 leftTitles: SideTitles(
                     showTitles: true,
-                    reservedSize: 25,
+                    reservedSize: 30,
                     getTextStyles: (context, value) {
                       return TextStyle(color: Color.fromARGB(255, 40, 36, 69));
-                    }),
+                    }), 
               ),
               lineTouchData: LineTouchData(
                   getTouchedSpotIndicator: (barData, spotIndexes) {
@@ -114,7 +138,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                       getTooltipItems: (tSpots) {
                         return tSpots.map((e) {
                           return LineTooltipItem(
-                              e.y.toString(),
+                              e.y.toStringAsFixed(2)+"%",
                               GoogleFonts.poppins(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold));

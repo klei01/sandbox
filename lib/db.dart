@@ -7,7 +7,7 @@ class Database {
   static sendData(double value){
     firestore.collection("data").add(
       {
-        "value" : value,
+        "value" : value != double.nan ? value : 0,
         "time" : FieldValue.serverTimestamp(),
         "uid"  : FirebaseAuth.instance.currentUser.uid != null ? FirebaseAuth.instance.currentUser.uid : "NA"
       }

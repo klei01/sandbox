@@ -12,7 +12,7 @@ class TimePeriodButton extends StatelessWidget {
       width: 120,
       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       child: TextButton(
-          onPressed: () =>changeTitle,
+          onPressed: () => changeTitle(),
           child: Text(
             this.label,
             style: GoogleFonts.roboto(fontWeight: FontWeight.bold),
