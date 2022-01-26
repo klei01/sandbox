@@ -15,17 +15,17 @@ class WeightIndicatorRightState extends State<WeightIndicatorRight> {
   double _height;
   void getHeight() {
     _height = _key.currentContext.size.height;
-    print(_height);
   }
 
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => getHeight());
   }
 
   @override
   Widget build(BuildContext context) {
-    double progress = this.widget.progress > 1 ? 1 : this.widget.progress;
+    WidgetsBinding.instance.addPostFrameCallback((_) => getHeight());
+    double progress = this.widget.progress > 1 ? 1 : this.widget.progress ?? 0;
+    progress = progress.isFinite ? progress : 0;
     int percentage = (progress * 100).round();
     Color progressColor = progress >= 0.25
         ? Colors.green
@@ -69,37 +69,39 @@ class WeightIndicatorRightState extends State<WeightIndicatorRight> {
             ),
             Expanded(
               flex: 1,
-              child: Container(
-                  margin: EdgeInsets.zero,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color.fromARGB(150, 255, 255, 255),
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 3.5,
-                        )
-                      ]),
-                  child: Column(
-                    children: [
-                      Expanded(
-                          flex: 100 - percentage,
-                          child: Container(
-                            color: Colors.transparent,
-                          )),
-                      Expanded(
-                          flex: percentage,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: progressColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 2.5,
-                                  )
-                                ]),
-                          )),
-                    ],
-                  )),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                    margin: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(150, 255, 255, 255),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 3.5,
+                          )
+                        ]),
+                    child: Column(
+                      children: [
+                        Expanded(
+                            flex: 100 - percentage,
+                            child: Container(
+                              color: Colors.transparent,
+                            )),
+                        Expanded(
+                            flex: percentage,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: progressColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 2.5,
+                                    )
+                                  ]),
+                            )),
+                      ],
+                    )),
+              ),
             ),
           ]),
         ),

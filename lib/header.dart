@@ -51,6 +51,11 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin{
       send = prefs.getBool("send") ?? false;
     });
   }
+  Future<void> setPrefs() async{
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setInt("Erlaubte Belastung", Database.getPressure());
+    prefs.setInt("Gewicht", Database.getWeight());
+  }
   
   void warnUser() async{
     if( value > 0.005 && value*100 < belastung && await Vibration.hasVibrator()){
@@ -63,6 +68,7 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
+    setPrefs();
     _audioCache = AudioCache(
       fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP),
     );

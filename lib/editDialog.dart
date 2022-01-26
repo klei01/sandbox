@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sandbox/db.dart';
 import 'package:sandbox/settingTitle.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -120,6 +121,11 @@ class _EditDialogState extends State<EditDialog> {
                             }
                             int value = int.parse(text.text);
                             setValue(value);
+                            if(widget.title == "Gewicht"){
+                              Database.setWeight(value);
+                            }else{
+                              Database.setPressure(value);
+                            }
                             Navigator.pop(context);
                           },
                           child: Container(

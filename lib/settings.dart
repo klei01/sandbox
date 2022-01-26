@@ -99,7 +99,7 @@ class Settings extends StatelessWidget {
                           "Ausloggen"),
                     ],
                   ),
-                ),
+                ),  
               ]);
             },
           );

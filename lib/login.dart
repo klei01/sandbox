@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sandbox/text_flied.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'db.dart';
 import 'fire_auth.dart';
 
 class login extends StatefulWidget {
@@ -73,7 +75,9 @@ class _loginState extends State<login> {
               color: Colors.transparent,
             ),
             ElevatedButton(
-                onPressed: () => FireAuth.signinWithEmailAndPassword(emailController.text, passwordController.text,auth),
+                onPressed: () {
+                  FireAuth.signinWithEmailAndPassword(emailController.text, passwordController.text,auth);
+                  },
                 child: Text('Log in'),
                 style: ElevatedButton.styleFrom(
                     primary: Color.fromRGBO(40, 36, 69, 100),
