@@ -29,8 +29,8 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin{
   double value = 0;
   String rightLabel;
   String leftLabel;
-  int weight;
-  int belastung;
+  int weight = 0;
+  int belastung = 0;
   String address;
   bool send;
   bool vibrate;
@@ -42,9 +42,9 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin{
   Future<void> initPrefs() async {
     final prefs = await SharedPreferences.getInstance();
      setState(() {
-      weight = prefs.getInt("Gewicht") ?? 75;
+      weight = prefs.getInt("Weight") ?? 75;
       address = prefs.getString("connection") ?? "";
-      belastung = prefs.getInt("Erlaubte Belastung") ?? 20;
+      belastung = prefs.getInt("Allowed Weight Bearing") ?? 20;
       vibrate = prefs.getBool("vibrate") ?? false;
       sound = prefs.getBool("sound") ?? false;
       led = prefs.getBool("led") ?? false;
@@ -53,8 +53,14 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin{
   }
   Future<void> setPrefs() async{
     final prefs = await SharedPreferences.getInstance();
-    prefs.setInt("Erlaubte Belastung", Database.getPressure());
-    prefs.setInt("Gewicht", Database.getWeight());
+    int pressure = await Database.getPressure();
+    print("Pressure"+pressure.toString());
+    int weight = await Database.getWeight();
+    if(pressure != null && pressure != 0){
+      prefs.setInt("Allowed Weight Bearing", pressure);
+    }
+    if(weight != null && weight != 0)
+      prefs.setInt("Weight", weight);
   }
   
   void warnUser() async{
@@ -67,6 +73,7 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin{
   }
   @override
   void initState() {
+    print("initState");
     super.initState();
     setPrefs();
     _audioCache = AudioCache(
@@ -76,9 +83,10 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin{
   .authStateChanges()
   .listen((User user) {
     if (user == null) {
+      if(connection != null)
+        connection.close();
       Navigator.pushNamed(context,"login");
     } else {
-      print('User is signed in!');
     }
   });
   initPrefs().then((_) {
@@ -113,7 +121,7 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     initPrefs().then((_) async{
-      if(send){
+      if(send && connected){
         print("Sending...");
         if(led)
           connection.output.add(ascii.encode(weight.toString()+";"+ belastung.toString()));
@@ -142,11 +150,11 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin{
                     children: [
                       Align(
                         alignment: Alignment.bottomLeft,
-                        child:weight != null ? WeightIndicatorLeft(leftValue/(weight/2),leftLabel ?? "0") : WeightIndicatorLeft(0, "")
+                        child:weight != null ? WeightIndicatorLeft(leftValue/(weight/2),leftLabel ?? "0",belastung) : WeightIndicatorLeft(0, "",belastung)
                       ),
                       Align(
                         alignment: Alignment.bottomRight,
-                        child:weight != null ? WeightIndicatorRight(rightValue/(weight/2),rightLabel ?? "0") : WeightIndicatorRight(0, "")
+                        child:weight != null ? WeightIndicatorRight(rightValue/(weight/2),rightLabel ?? "0",belastung) : WeightIndicatorRight(0, "",belastung)
                       ),
                       Settings(),
                       Align(
@@ -192,11 +200,10 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin{
                   ))
         );
   }
-void bluetoothConnection() async {
+void bluetoothConnection() async {  
   if (address != "") {
     try {
       connection = await BluetoothConnection.toAddress(address);
-      String light = led ? "1" : "0";
       if(led)
           connection.output.add(ascii.encode(weight.toString()+";"+ belastung.toString()));
         else
@@ -204,7 +211,6 @@ void bluetoothConnection() async {
       connection.input.listen((event) {
           String data = utf8.decode(event);
           List<String> values = data.split(";");
-          print(data);
           setState(() {
             leftValue = double.parse(values.first);
             rightValue = double.parse(values.last);

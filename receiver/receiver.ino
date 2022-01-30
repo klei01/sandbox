@@ -149,7 +149,6 @@ void warnUser(float slaveWeight,float masterWeight){
   int belastung;
   EEPROM.get(0,weight);
   EEPROM.get(sizeof(int),belastung);
-  Serial.println(belastung);
   if(belastung == 0){
     digitalWrite(10,LOW);
   }else{

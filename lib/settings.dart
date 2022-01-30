@@ -5,17 +5,6 @@ import 'package:sandbox/settingOption.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatelessWidget {
-  // bool vibrate;
-  // bool sound;
-  // bool led;
-  // initPrefs() async{
-  //   final prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     vibrate = prefs.getBool("vibrate") ?? false;
-  //     sound = prefs.getBool("sound") ?? false;
-  //     led = prefs.getBool("led") ?? false;
-  //   });
-  // }
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -88,15 +77,15 @@ class Settings extends StatelessWidget {
                       SettingOption(
                           Icon(Icons.monitor_weight_outlined,
                               color: Colors.white, size: 30),
-                          "Gewicht"),
+                          "Weight"),
                       SettingOption(
                           Icon(Icons.compress_outlined,
                               color: Colors.white, size: 30),
-                          "Erlaubte Belastung"),
+                          "Allowed Weight Bearing"),
                       SettingOption(
                           Icon(Icons.logout_outlined,
                               color: Colors.white, size: 30),
-                          "Ausloggen"),
+                          "Log Out"),
                     ],
                   ),
                 ),  

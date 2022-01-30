@@ -36,7 +36,7 @@ class _SettingOptionState extends State<SettingOption> {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-          onTap: widget.title == "Ausloggen"
+          onTap: widget.title == "Log Out"
               ? () {
                FirebaseAuth.instanceFor(app : Firebase.apps.first).signOut();
               }: () {

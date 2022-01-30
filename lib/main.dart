@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
               AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light),
         ),
         home: login()
-        //MyHomePage(title: 'Flutter Demo Home Page'),
         );
   }
 }

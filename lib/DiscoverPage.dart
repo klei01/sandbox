@@ -110,12 +110,6 @@ class _DiscoveryPage extends State<DiscoveryPage> {
               Navigator.of(context).pop(result.device);
                SharedPreferences preferences = await SharedPreferences.getInstance();
                preferences.setString("connection", result.device.address);
-                  // try {
-                  //   connection = await BluetoothConnection.toAddress(result.device.address);
-                  //   print('Connected to the device');
-                  // } catch (exception) {
-                  //   print('Cannot connect, exception occured');
-                  // }
             },
             onLongPress: () async {
               try {

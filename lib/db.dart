@@ -19,20 +19,20 @@ class Database {
   static setPressure(int value){
     firestore.collection("User").doc(FirebaseAuth.instance.currentUser.uid).update({"belastung":value});
   }
-  static int getWeight(){
-    firestore.collection("User").doc(FirebaseAuth.instance.currentUser.uid).get().then((DocumentSnapshot snapshot){
-      if(snapshot.exists){
-        return snapshot.get("gewicht") ?? 0;
-      }
+  static Future<int> getWeight() async{
+    int gewicht = 0;
+    await firestore.collection("User").doc(FirebaseAuth.instance.currentUser.uid).get().then((DocumentSnapshot snapshot){
+        Map<String,dynamic> data = snapshot.data();
+        gewicht = data["gewicht"];
     });
-    return 0;
+    return gewicht;
   }
-  static int getPressure(){
-    firestore.collection("User").doc(FirebaseAuth.instance.currentUser.uid).get().then((DocumentSnapshot snapshot){
-      if(snapshot.exists){
-        return snapshot.get("belastung") ?? 0;
-      }
+  static Future<int> getPressure() async{
+    int belastung = 0;
+    await firestore.collection("User").doc(FirebaseAuth.instance.currentUser.uid).get().then((DocumentSnapshot snapshot){
+        Map<String,dynamic> data = snapshot.data();
+        belastung = data["belastung"];
     });
-    return 0;
+    return belastung;
   }
 }

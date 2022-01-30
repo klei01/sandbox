@@ -24,7 +24,7 @@ class _NotificationButtonState extends State<NotificationButton> {
   void initPrefs() async{
   final prefs = await SharedPreferences.getInstance();
     setState(() {
-      active = prefs.getBool(widget.title);
+      active = prefs.getBool(widget.title) ?? false;
     });
   }
   @override

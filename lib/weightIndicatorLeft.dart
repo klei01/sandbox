@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class WeightIndicatorLeft extends StatefulWidget {
   final double progress;
-  String label;
-  WeightIndicatorLeft(this.progress, this.label);
+  final String label;
+  final int belastung;
+  WeightIndicatorLeft(this.progress, this.label,this.belastung);
   @override
   createState() => WeightIndicatorLeftState();
 }
@@ -25,11 +26,11 @@ class WeightIndicatorLeftState extends State<WeightIndicatorLeft> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) => getHeight());
     double progress = this.widget.progress > 1 ? 1 : this.widget.progress ?? 0;
-    progress = progress.isNaN ? 0 : progress;
+    progress = progress.isNaN  ? 0 : progress;
     int percentage = (progress * 100).round();
-    Color progressColor = progress >= 0.35
+    Color progressColor = progress >= (widget.belastung+10)/100
         ? Colors.green
-        : progress >= 0.25
+        : progress >= widget.belastung/100
             ? Colors.orange
             : Colors.red;
     return Container(

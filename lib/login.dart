@@ -26,10 +26,9 @@ class _loginState extends State<login> {
   .authStateChanges()
   .listen((User user) {
     if (user == null) {
-      print('User is currently signed out!');
     } else {
-      print("sth");
-      Navigator.pushNamed(context, "home");
+      print("object");
+      Navigator.pushNamedAndRemoveUntil(context, "home",(_)=> false);
     }
   });
     super.initState();

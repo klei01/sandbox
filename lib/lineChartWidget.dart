@@ -18,7 +18,6 @@ class LineChartWidget extends StatefulWidget {
 }
 
 class _LineChartWidgetState extends State<LineChartWidget> {
-  final prefs = SharedPreferences.getInstance();
   double max;
   String getTimeString(double time) { 
     Timestamp timestamp = Timestamp.fromMillisecondsSinceEpoch(time.toInt());
@@ -27,12 +26,8 @@ class _LineChartWidgetState extends State<LineChartWidget> {
   }
   int belastung = 0;
   Future<void> getValue() async {
-    belastung = await prefs.then((prefs) {
-      return prefs.getInt("Erlaubte Belastung") ?? 0;
-    });
-     setState(() {
-      
-    });
+  final prefs = await SharedPreferences.getInstance();
+    belastung = prefs.getInt("Allowed Weight Bearing");
   }
   @override
   void initState() {
@@ -41,6 +36,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
   }
   @override
   Widget build(BuildContext context) {
+    getValue();
     double min;
     double max;
     Stream data;
@@ -78,7 +74,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
               Map<String, dynamic> data = doc.data() as Map<String,dynamic>;
               Timestamp timestamp =data["time"] as Timestamp;
               double value = data["value"] *100 as double;
-              value = value.isNaN ? 0 : value;
+              value = value.isFinite ? value : 0;
               FlSpot spot = FlSpot(timestamp.millisecondsSinceEpoch.toDouble(), value);
               return spot;
           }).toList();
@@ -153,7 +149,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                     ),
                     gradientFrom: Offset(0, 1),
                     gradientTo: Offset(0, 0),
-                    colorStops: [0.0, 0.25, 0.35],
+                    colorStops: [0.0, belastung/100 , (belastung+10)/100],
                     isStrokeCapRound: true,
                     belowBarData: BarAreaData(
                         show: true,
@@ -164,9 +160,9 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                         ],
                         gradientFrom: Offset(0, 1),
                         gradientTo: Offset(0, 0),
-                        gradientColorStops: [0.0, 0.25, 0.35]),
+                        gradientColorStops: [0.0, belastung/100 , (belastung+10)/100]),
                     colors: [Colors.red, Colors.orange, Colors.green],
-                    spots: spots)
+                    spots:  spots)
               ],
             )));
         }else{

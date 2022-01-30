@@ -24,6 +24,7 @@ class _EditDialogState extends State<EditDialog> {
   Future<void> setValue(int value) async {
     final prefs = await _prefs;
     prefs.setInt(widget.title, value);
+    prefs.setBool("send", true);
   }
 
   Future<void> getValue() async {
@@ -55,7 +56,7 @@ class _EditDialogState extends State<EditDialog> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
-               widget.title == "Gewicht" ?"Aktuell : ${_value}kg" : "Aktuell : ${_value}%",
+               widget.title == "Weight" ?"Aktuell : ${_value}kg" : "Aktuell : ${_value}%",
                 style: GoogleFonts.roboto(
                     color: Colors.white,
                     fontSize: 20,
@@ -121,7 +122,7 @@ class _EditDialogState extends State<EditDialog> {
                             }
                             int value = int.parse(text.text);
                             setValue(value);
-                            if(widget.title == "Gewicht"){
+                            if(widget.title == "Weight"){
                               Database.setWeight(value);
                             }else{
                               Database.setPressure(value);
