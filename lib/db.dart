@@ -30,7 +30,6 @@ class Database {
   static int getPressure(){
     firestore.collection("User").doc(FirebaseAuth.instance.currentUser.uid).get().then((DocumentSnapshot snapshot){
       if(snapshot.exists){
-        print("Got it");
         return snapshot.get("belastung") ?? 0;
       }
     });
